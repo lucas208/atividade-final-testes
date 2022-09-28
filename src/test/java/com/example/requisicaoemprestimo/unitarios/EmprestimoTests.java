@@ -1,53 +1,38 @@
 package com.example.requisicaoemprestimo.unitarios;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.text.DecimalFormat;
-import java.util.UUID;
+import com.example.requisicaoemprestimo.domain.models.Emprestimo;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class EmprestimoTests {
+
+    @Autowired
+    EmprestimoTestsFixture fixture;
+
     @Test
     public void testParcelas(){
-        // ARRANGE
-        //TODO: FAÇA USO DO FIXTURE
-        //TODO: Crie uma classe Emprestimo com valor 100 e quantidade de parcelas 12
+        Emprestimo emprestimo = fixture.emprestimoAprovado(100, 12);
 
-        // ACT
-        //TODO: Recupere as parcelas do emprestimo
-
-        // ASSERTS
-        //TODO: Validar se existe parcelas
-        //TODO: Validar o valor total de empréstimo é 106.50
-        //TODO: Validar se o número de parcelas é 12
+        assertTrue(emprestimo.getParcelas().isPresent());
+        assertEquals(106.50, emprestimo.getValorTotalEmprestimo());
+        assertEquals(12, emprestimo.getQuantidadeParcelasSolicitadas());
     }
 
     @Test
     public void testeAnaliseDeCreditoInvalida(){
-        // ARRANGE
-        //TODO: FAÇA USO DO FIXTURE
-        //TODO: Crie uma classe Emprestimo com valor 100 e quantidade de parcelas 12
-
-        // ACT
-        //TODO: Crie uma análise de crédito rejeitando a proposta
-        //TODO: Associe or resulado ao emprestimo
-
-        // ASSERTS
-        //TODO: Validar que o  emprestimo NÃO está aprovado
+        Emprestimo emprestimo = fixture.emprestimoAnaliseInvalida(100, 12);
+        
+        assertEquals(false, emprestimo.isEmprestimoFoiAprovado());
     }
 
     @Test
     public void testeResultadoDaTesourariaInvalida(){
-        // ARRANGE
-        //TODO: FAÇA USO DO FIXTURE
-        //TODO: Crie uma classe Emprestimo com valor 100 e quantidade de parcelas 12
+        Emprestimo emprestimo = fixture.emprestimoTesourariaInvalida(100, 12);
 
-        // ACT
-        //TODO: Crie uma solicitação para tesouraria rejeitando a proposta
-        //TODO: Associe o resultado ao emprestimo
-
-        // ASSERTS
-        //TODO: Validar que o  emprestimo NÃO está aprovado
+        assertEquals(false, emprestimo.isEmprestimoFoiAprovado());
     }
 
 }
